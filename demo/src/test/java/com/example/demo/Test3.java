@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Create by Hercules
@@ -10,40 +9,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Test3 {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        AtomicInteger atomicInteger = new AtomicInteger(0);
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
-                1,
-                1,
-                10,
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 10,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(6),
-                new ThreadFactory() {
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        Thread thread = new Thread(r);
-                        thread.setName("test-name-" + atomicInteger.incrementAndGet());
-                        return thread;
-                    }
-                }, new RejectedExecutionHandler() {
-            @Override
-            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                System.out.println("拒绝策略，丢弃");
-            }
-        });
-        threadPool.allowCoreThreadTimeOut(true);
-        for (int i = 0; i < 10; i++) {
-            threadPool.execute(() -> {
-//            throw new RuntimeException("RuntimeException from inside execute");
-                System.out.println("线程名称" + Thread.currentThread().getName() + ",优先级" + Thread.currentThread().getPriority() + ",守护线程" + Thread.currentThread().isDaemon());
-            });
-        }
+                new ArrayBlockingQueue<>(6));
 
-//        Future<Object> future = threadPool.submit(() -> {
-////            throw new RuntimeException("RuntimeException from inside submit");
-//            return null;
-//        });
+        execute(threadPool);
+
 //        try {
-//            if (future.get() == null) {//如果Future's get返回null，任务完成
+//            Object submit = submit(threadPool);
+//            if (submit == null) {//如果Future's get返回null，任务完成
 //                System.out.println("任务完成");
 //            }
 //        } catch (InterruptedException e) {
@@ -52,6 +26,21 @@ public class Test3 {
 //            //否则我们可以看看任务失败的原因是什么
 //            System.out.println(e.getCause().getMessage());
 //        }
+
         threadPool.shutdown();
+    }
+
+    private static void execute(ThreadPoolExecutor threadPool) {
+        threadPool.execute(() -> {
+            throw new RuntimeException("RuntimeException from inside execute");
+        });
+    }
+
+    private static Object submit(ThreadPoolExecutor threadPool) throws ExecutionException, InterruptedException {
+        Future<Object> future = threadPool.submit(() -> {
+            throw new RuntimeException("RuntimeException from inside submit");
+//            return null;
+        });
+        return future.get();
     }
 }
