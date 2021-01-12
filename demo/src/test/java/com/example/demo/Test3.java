@@ -42,10 +42,11 @@ public class Test3 {
 //            return null;
         });
         String hello = "kk";
+        String username = "hello world";
         return future.get();
 
 
-        String username = "hello world";
+        
 
 
 
