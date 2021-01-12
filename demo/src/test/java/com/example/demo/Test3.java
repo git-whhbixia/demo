@@ -42,5 +42,8 @@ public class Test3 {
 //            return null;
         });
         return future.get();
+        
+        
+        String username = "hello world";
     }
 }
