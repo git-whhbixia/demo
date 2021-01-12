@@ -23,6 +23,7 @@ public class Test1 {
             order.setDesc("desc"+i);
             executorsUtil.execute(new OrderTask(order));
         }
+        executorsUtil.shutdown();
 
     }
 }
