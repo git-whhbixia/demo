@@ -41,6 +41,10 @@ public class Test3 {
             throw new RuntimeException("RuntimeException from inside submit");
 //            return null;
         });
+        String hello = "kk";
         return future.get();
+
+
+
     }
 }
