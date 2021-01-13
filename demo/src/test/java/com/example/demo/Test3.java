@@ -1,53 +1,51 @@
 package com.example.demo;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-/**
- * Create by Hercules
- * 2021-01-03 20:26
- */
 public class Test3 {
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 10,
-                TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(6));
+    public static void main(String[] args) {
+        ExecutorService pool = Executors.newFixedThreadPool(2);
 
-        execute(threadPool);
+        /**
+         * execute(Runnable x) 没有返回值。可以执行任务，但无法判断任务是否成功完成。
+         */
+//        pool.execute(new RunnableTest("Task1"));
 
-//        try {
-//            Object submit = submit(threadPool);
-//            if (submit == null) {//如果Future's get返回null，任务完成
-//                System.out.println("任务完成");
-//            }
-//        } catch (InterruptedException e) {
-//
-//        } catch (ExecutionException e) {
-//            //否则我们可以看看任务失败的原因是什么
-//            System.out.println(e.getCause().getMessage());
-//        }
+        /**
+         * submit(Runnable x) 返回一个future。可以用这个future来判断任务是否成功完成。请看下面：
+         */
+        Future future = pool.submit(new RunnableTest("Task2"));
 
-        threadPool.shutdown();
-    }
-
-    private static void execute(ThreadPoolExecutor threadPool) {
-        threadPool.execute(() -> {
-            throw new RuntimeException("RuntimeException from inside execute");
-        });
-    }
-
-    private static Object submit(ThreadPoolExecutor threadPool) throws ExecutionException, InterruptedException {
-        Future<Object> future = threadPool.submit(() -> {
-            throw new RuntimeException("RuntimeException from inside submit");
-//            return null;
-        });
-        String hello = "kk";
-        return future.get();
-
-
-        
-
-
+        try {
+            if(future.get()==null){//如果Future's get返回null，任务完成
+                System.out.println("任务完成");
+            }
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+            //否则我们可以看看任务失败的原因是什么
+            System.out.println(e.getCause().getMessage());
+        }
 
     }
+
+}
+
+ class RunnableTest implements Runnable {
+
+    private String taskName;
+
+    public RunnableTest(final String taskName) {
+        this.taskName = taskName;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Inside "+taskName);
+//        throw new RuntimeException("RuntimeException from inside " + taskName);
+    }
+
 }

@@ -4,6 +4,7 @@ import java.util.concurrent.*;
 
 /**
  * Create by Hercules
+ * 处理执行时间过长的任务
  * 2021-01-06 17:37
  */
 public class Test2 {

@@ -16,6 +16,11 @@ public class OrderTask implements Runnable {
 
     @Override
     public void run() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         String taskId = order.getTaskId();
 //        System.out.println("订单信息：" + order);
     }

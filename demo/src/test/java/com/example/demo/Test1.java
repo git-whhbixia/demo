@@ -11,23 +11,24 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Create by Hercules
+ * 线程池的监控
  * 2021-01-06 17:56
  */
 public class Test1 {
 
-    public static void main(String[] args) {
-        ExecutorsUtil executorsUtil = new ExecutorsUtil(2, 4, 5, TimeUnit.SECONDS,
-                new ArrayBlockingQueue(4), "订单线程");
-        System.out.println("当前时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        for (int i = 0; i < 5; i++) {
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorsUtil executorsUtil = new ExecutorsUtil(1, 5, 5, TimeUnit.SECONDS,
+                new ArrayBlockingQueue(5), "订单线程");
+        for (int i = 0; i < 10; i++) {
             Order order = new Order();
             order.setTaskId("oderId-" + i);
             order.setTaskName("orderTask");
             order.setDesc("desc" + i);
             executorsUtil.execute(new OrderTask(order));
         }
+        Thread.sleep(200);
+        executorsUtil.setCorePoolSize(2);
         executorsUtil.shutdown();
-        System.out.println("结束时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
     }
 }

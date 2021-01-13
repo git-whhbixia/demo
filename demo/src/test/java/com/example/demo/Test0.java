@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Create by Hercules
+ * 默认的4种创建线程池的方式
  * 2021-01-07 11:05
  */
 public class Test0 {
@@ -14,13 +15,6 @@ public class Test0 {
         ExecutorService service2 = Executors.newSingleThreadExecutor();
         ExecutorService service3 = Executors.newCachedThreadPool();
         ExecutorService service4 = Executors.newScheduledThreadPool(10);
-
-        for (int i = 0; i < 100; i++) {
-            int finalI = i;
-            service1.execute(()->{
-                System.out.println(finalI);
-            });
-        }
 
     }
 }
