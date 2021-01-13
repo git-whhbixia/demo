@@ -3,6 +3,8 @@ package com.example.demo;
 import com.example.demo.pojo.Order;
 import com.example.demo.utils.ExecutorsUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -14,16 +16,18 @@ import java.util.concurrent.TimeUnit;
 public class Test1 {
 
     public static void main(String[] args) {
-        ExecutorsUtil executorsUtil = new ExecutorsUtil(2,4,5, TimeUnit.SECONDS,
-                new ArrayBlockingQueue(4),"订单线程");
+        ExecutorsUtil executorsUtil = new ExecutorsUtil(2, 4, 5, TimeUnit.SECONDS,
+                new ArrayBlockingQueue(4), "订单线程");
+        System.out.println("当前时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         for (int i = 0; i < 5; i++) {
             Order order = new Order();
-            order.setTaskId("oderId-"+ UUID.randomUUID().toString());
+            order.setTaskId("oderId-" + i);
             order.setTaskName("orderTask");
-            order.setDesc("desc"+i);
+            order.setDesc("desc" + i);
             executorsUtil.execute(new OrderTask(order));
         }
         executorsUtil.shutdown();
+        System.out.println("结束时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
     }
 }

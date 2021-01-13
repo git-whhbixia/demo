@@ -42,8 +42,6 @@ public class Test3 {
 //            return null;
         });
         String hello = "kk";
-        String username = "hello world1111111";
-        String username1 = "hello worldccccccc";
         return future.get();
 
 

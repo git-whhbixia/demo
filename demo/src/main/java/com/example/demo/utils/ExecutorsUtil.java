@@ -84,7 +84,7 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
         LOGGER.info(this.poolName
                         + "-pool-monitor: \n Duration: {} ms ,CorePoolSize: {}, Active: {}, Completed: {}, Task: {}, Queue: {}, MaximumPoolSize: {},KeepAliveTime: {} ,\n params: {} \n",
                 diff, this.getCorePoolSize(), this.getActiveCount(), this.getCompletedTaskCount(), this.getTaskCount(),
-                this.getQueue().size(), this.getMaximumPoolSize(), this.getKeepAliveTime(TimeUnit.MILLISECONDS), task.getOrder());
+                this.getQueue().size(), this.getMaximumPoolSize(), this.getKeepAliveTime(TimeUnit.MILLISECONDS), task != null ? task.getOrder() : null);
     }
 
     /**
