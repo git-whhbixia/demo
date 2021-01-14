@@ -37,6 +37,13 @@ public class ExecutorsUtil extends ThreadPoolExecutor {
         this.poolName = poolName;
     }
 
+    public ExecutorsUtil(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue workQueue,
+                         String poolName,RejectedExecutionHandler rejectedExecutionHandler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new EventThreadFactory(poolName),rejectedExecutionHandler);
+        this.startTimes = new ConcurrentHashMap<>();
+        this.poolName = poolName;
+    }
+
     /**
      * 线程池延迟关闭时(等待线程池里的任务都执行完毕),统计线程池情况
      */

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Create by Hercules
- * 线程池的监控
+ * 线程池的创建、监控
  * 2021-01-06 17:56
  */
 public class Test1 {

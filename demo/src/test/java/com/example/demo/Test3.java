@@ -1,37 +1,31 @@
 package com.example.demo;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
+/**
+ * Create by Hercules
+ * 处理执行时间过场的任务 采用超时时间 future方式
+ * 2021-01-06 17:37
+ */
 public class Test3 {
 
-    public static void main(String[] args) {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+    public static void main(String[] args) throws InterruptedException {
 
-        /**
-         * execute(Runnable x) 没有返回值。可以执行任务，但无法判断任务是否成功完成。
-         */
-        pool.execute(new Task("Task1"));
-
-        /**
-         * submit(Runnable x) 返回一个future。可以用这个future来判断任务是否成功完成。请看下面：
-         */
-        Future future = pool.submit(new Task("Task2"));
-
-        try {
-            if(future.get()==null){//如果Future's get返回null，任务完成
-                System.out.println("任务完成");
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        Future<?> future = service.submit(() -> {
+            System.out.println("start");
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-            //否则我们可以看看任务失败的原因是什么
-            System.out.println(e.getCause().getMessage());
+        });
+        try {
+            future.get(4, TimeUnit.SECONDS);
+            System.out.println("end...");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        pool.shutdown();
 
     }
-
 }
-
