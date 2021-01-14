@@ -1,11 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.pojo.Order;
+import com.example.demo.task.OrderTask;
 import com.example.demo.utils.ExecutorsUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +25,7 @@ public class Test1 {
             executorsUtil.execute(new OrderTask(order));
         }
         Thread.sleep(200);
+        //可以通过disconf来修改
         executorsUtil.setCorePoolSize(2);
         executorsUtil.shutdown();
 
