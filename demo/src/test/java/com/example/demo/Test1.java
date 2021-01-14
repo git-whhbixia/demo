@@ -5,6 +5,8 @@ import com.example.demo.task.OrderTask;
 import com.example.demo.utils.ExecutorsUtil;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,8 +17,18 @@ import java.util.concurrent.TimeUnit;
 public class Test1 {
 
     public static void main(String[] args) throws InterruptedException {
-        ExecutorsUtil executorsUtil = new ExecutorsUtil(1, 5, 5, TimeUnit.SECONDS,
-                new ArrayBlockingQueue(5), "订单线程");
+        ExecutorsUtil executorsUtil = new ExecutorsUtil(1, 2, 5, TimeUnit.SECONDS,
+                new ArrayBlockingQueue(4), "订单线程", new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.err.println("持久化到磁盘");
+            }
+        });
         for (int i = 0; i < 10; i++) {
             Order order = new Order();
             order.setTaskId("oderId-" + i);

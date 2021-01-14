@@ -4,7 +4,7 @@ import java.util.concurrent.*;
 
 /**
  * Create by Hercules
- * 处理执行时间过场的任务 采用超时时间 future方式
+ * 处理执行时间过长的任务 采用超时时间 future方式
  * 2021-01-06 17:37
  */
 public class Test3 {
