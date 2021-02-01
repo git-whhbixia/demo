@@ -3,7 +3,10 @@ package com.example.demo;
 import com.example.demo.pojo.Order;
 import com.example.demo.task.OrderTask;
 import com.example.demo.utils.ExecutorsUtil;
+import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,28 +20,49 @@ import java.util.concurrent.TimeUnit;
 public class Test1 {
 
     public static void main(String[] args) throws InterruptedException {
-        ExecutorsUtil executorsUtil = new ExecutorsUtil(1, 2, 5, TimeUnit.SECONDS,
+        ExecutorsUtil executorsUtil = new ExecutorsUtil(2, 4, 5, TimeUnit.SECONDS,
                 new ArrayBlockingQueue(4), "订单线程", new RejectedExecutionHandler() {
             @Override
             public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (r instanceof OrderTask) {
+                    System.err.println("持久化到磁盘,OrderTask类型");
+                    try {
+                        ObjUtils.writeObj(((OrderTask) r).getOrder());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                System.err.println("持久化到磁盘");
             }
         });
-        for (int i = 0; i < 10; i++) {
+
+        new Thread(() -> {
+            while (true) {
+                try {
+                    List<Order> orders = ObjUtils.readObj();
+                    if (CollectionUtils.isEmpty(orders)) {
+                        Thread.sleep(1000);
+                    }
+                    System.out.println("获取磁盘数据写入线程池 size" + orders.size());
+                    for (Order order : orders) {
+                        executorsUtil.execute(new OrderTask(order));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
+        for (int i = 0; i < 20; i++) {
             Order order = new Order();
             order.setTaskId("oderId-" + i);
             order.setTaskName("orderTask");
             order.setDesc("desc" + i);
-            executorsUtil.execute(new OrderTask(order));
+            OrderTask orderTask = new OrderTask(order);
+            executorsUtil.execute(orderTask);
         }
         Thread.sleep(200);
         //可以通过disconf来修改
-        executorsUtil.setCorePoolSize(2);
+//        executorsUtil.setCorePoolSize(2);
         executorsUtil.shutdown();
 
     }

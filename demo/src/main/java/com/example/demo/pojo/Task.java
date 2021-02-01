@@ -1,10 +1,12 @@
 package com.example.demo.pojo;
 
+import java.io.Serializable;
+
 /**
  * Create by Hercules
  * 2021-01-07 10:43
  */
-public class Task {
+public class Task implements Serializable {
 
     private String taskId;
 
