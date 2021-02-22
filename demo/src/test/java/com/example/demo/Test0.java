@@ -1,7 +1,8 @@
 package com.example.demo;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.example.demo.utils.ExecutorsUtil;
+
+import java.util.concurrent.*;
 
 /**
  * Create by Hercules
@@ -15,6 +16,8 @@ public class Test0 {
         ExecutorService service2 = Executors.newSingleThreadExecutor();
         ExecutorService service3 = Executors.newCachedThreadPool();
         ExecutorService service4 = Executors.newScheduledThreadPool(10);
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 2, 3, TimeUnit.SECONDS,
+                new ArrayBlockingQueue(5),new ThreadPoolExecutor.CallerRunsPolicy());
 
     }
 }

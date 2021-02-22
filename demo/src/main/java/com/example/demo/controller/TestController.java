@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Create by Hercules
@@ -20,5 +19,11 @@ public class TestController {
 
     public void test1(Integer a) throws Exception {
         System.out.println(a);
+    }
+
+    @RequestMapping(value = "/test1", method = RequestMethod.POST)
+    @ResponseBody
+    public void selfIMCallBack(@RequestParam(name = "app_id", required = false) String appId) {
+        System.out.println(appId);
     }
 }

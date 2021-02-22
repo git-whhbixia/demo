@@ -21,7 +21,7 @@ public class BakTask {
     /**
      * 每天24点执行
      */
-    @Scheduled(cron = "0 0 0 * * ? *")
+//    @Scheduled(cron = "0 0 0 * * ? *")
     public void work() throws FileNotFoundException {
         String format = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         System.out.println("bak log task execute " + format);
