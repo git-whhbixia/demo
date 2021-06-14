@@ -35,4 +35,15 @@ public class TestController {
         map.put("data", paramMap);
         return map;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/python1", method = RequestMethod.GET)
+    public void python1() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            final int k = i;
+            new Thread(()->{
+                System.out.println(k);
+            }).start();
+        }
+    }
 }

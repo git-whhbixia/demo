@@ -6,17 +6,18 @@ package com.example;
  */
 public class Test1 {
 
-    public double add(double k,int m){
-        return k + m;
-    }
 
     public static void main(String[] args) {
-        {
-            int x = 1;
-            System.out.println(x);
+
+        int f = 1;
+        int e = 10;
+        int m = 1;
+        System.out.println((f + e) * e / 2);
+        while (m < (f + e) * f / 2) {
+            m += m;
+            m++;
+            System.out.println(m);
         }
-
-
-
+        System.out.println(m);
     }
 }
