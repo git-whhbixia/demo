@@ -37,13 +37,11 @@ public class TestController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/python1", method = RequestMethod.GET)
-    public void python1() throws Exception {
-        for (int i = 0; i < 10; i++) {
-            final int k = i;
-            new Thread(()->{
-                System.out.println(k);
-            }).start();
-        }
+    @RequestMapping(value = "/python1", method = RequestMethod.POST)
+    public Map python1(Long setId) throws Exception {
+        Map map = new HashMap();
+        System.out.println("setId:" + setId);
+        map.put("setId", setId);
+        return map;
     }
 }
