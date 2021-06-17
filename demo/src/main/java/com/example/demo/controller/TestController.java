@@ -44,4 +44,13 @@ public class TestController {
         map.put("setId", setId);
         return map;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/optimization", method = RequestMethod.GET)
+    public Map optimization() throws Exception {
+        Map map = new HashMap();
+//        System.out.println("setId:" + setId);
+//        map.put("setId", setId);
+        return map;
+    }
 }
